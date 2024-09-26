@@ -48,13 +48,8 @@
 
     <main>
         <article class="error-entry">
-            <h2>Error: Docker Container Name Conflict</h2>
-            <p>When attempting to create or run a Docker container, I encountered the following error:</p>
-            <pre>
-docker: Error response from daemon: Conflict. The container name "/proxy" is already in use by
-container "a635a1388ce802b3c67d9bd0e4505bf5ace05ed632d7f08340a372f0715466e9". You have to remo
-ve (or rename) that container to be able to reuse that name.
-            </pre>
+            <h2>docker: Error response from daemon: Conflict. The container name "/proxy" is already in use by container "a635a1388ce802b3c67d9bd0e4505bf5ace05ed632d7f08340a372f0715466e9". You have to remove (or rename) that container to be able to reuse that name.</h2>
+            <p>Encountered this error when attempting to run a Docker container</p>
             <div class="solution">
                 <h3>Explanation:</h3>
                 <p>This error occurs when you try to create a new Docker container with a name that's already being used by another container. In this case, the name "proxy" is already assigned to an existing container.</p>
@@ -68,7 +63,7 @@ ve (or rename) that container to be able to reuse that name.
         </article>
 
         <article class="error-entry">
-            <h2>Error: WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8)</h2>
+            <h2>WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8)</h2>
             <p>Came across this warning when trying to run <code>docker run -d --name httpbin citizenstig/httpbin</code> on my M3 Macbook.</p>
             <div class="solution">
                 <h3>Solution:</h3>
