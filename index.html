@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Log</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .error-entry {
+            background-color: #f9f9f9;
+            border-left: 5px solid #e74c3c;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .error-entry h2 {
+            color: #e74c3c;
+        }
+        .solution {
+            background-color: #eafaf1;
+            border-left: 5px solid #2ecc71;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Error Log</h1>
+        <p>A collection of error messages and solutions I've encountered.</p>
+    </header>
+
+    <main>
+        <article class="error-entry">
+            <h2>Error: WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8)</h2>
+            <p>Came across this warning when trying to `docker run -d --name httpbin citizenstig/httpbin` on my M3 Macbook.</p>
+            <div class="solution">
+                <h3>Solution:</h3>
+                <p>This warning occurs when the Docker image's architecture doesn't match the host's architecture. In this case, the image is built for AMD64 (x86_64) architecture, but you're running on an ARM64 system (likely an Apple Silicon Mac or ARM-based server).</p>
+                <p>To resolve this, you have several options:</p>
+                <ol>
+                    <li>Use a multi-architecture image if available.</li>
+                    <li>Build the image specifically for your architecture.</li>
+                    <li>If you're using Docker Desktop for Mac, you can use the built-in virtualization, which allows you to run x86 containers on ARM systems.</li>
+                </ol>
+                <p>In this particular case, there were no images available for arm64, so I just used the x86_64 image with emulation.</p>
+            </div>
+        </article>
+
+        <!-- Add more error entries here as you encounter them -->
+
+    </main>
+
+    <footer>
+        <p>Created and maintained by Sam Westmoreland. Last updated: <span id="last-updated"></span></p>
+    </footer>
+
+    <script>
+        document.getElementById('last-updated').textContent = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>
