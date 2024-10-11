@@ -30,7 +30,6 @@ def main():
     with open('index.html', 'r') as f:
         index_html = f.read()
 
-    # Replace the content between <!-- ERROR_ENTRIES_START --> and <!-- ERROR_ENTRIES_END -->
     start_marker = "<!-- ERROR_ENTRIES_START -->"
     end_marker = "<!-- ERROR_ENTRIES_END -->"
     start_index = index_html.index(start_marker) + len(start_marker)
