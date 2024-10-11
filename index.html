@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Log</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .error-entry {
+            background-color: #f9f9f9;
+            border-left: 5px solid #e74c3c;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .error-entry h2 {
+            color: #e74c3c;
+            font-size: 1.0em;
+        }
+        .error-entry h3 {
+            font-size: 0.8em;
+        }
+        .error-entry p {
+            font-size: 0.7em;
+        }
+        .error-entry ol {
+            font-size: 0.7em;
+        }
+        .solution {
+            background-color: #eafaf1;
+            border-left: 5px solid #2ecc71;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .error-date {
+            display: block;
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .footer p {
+            font-size: 0.7em;
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sam's Error Log</h1>
+        <p>A collection of error messages I've encountered and how I resolved them.</p>
+    </header>
+
+    <main>
+        <!-- ERROR_ENTRIES_START -->
+
+    <article class="error-entry">
+        <h2>TLS_error:|268436501:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_EXPIRED:TLS_error_end</h2>
+        <p>When trying to curl an Istio Ingress Gateway, found this error in the Ingress's istio-proxy logs.</p>
+        <div class="solution">
+            <h3>Explanation:</h3>
+            <p>This is an issue that can occur with Istio where the TLS certificate on the Ingress Gateway is expired, meaning that the Ingress Gateway can't serve https traffic. The Istio control plane is supposed to periodically rotate these certificates, but if the certificate rotation fails, the Ingress can get stuck in a state with an expired certificate.</p>
+            <h3>Solution:</h3>
+            <p>The fix is to delete the Istio Ingress Gateway pod and create a new one. This should create a new pod with a valid certificate.</p>
+        </div>
+        <time datetime="10-10-2024" class="error-date">October 10, 2024</time>
+    </article>
+    
+    <article class="error-entry">
+        <h2>docker: Error response from daemon: Conflict. The container name "/proxy" is already in use by container "a635a1388ce802b3c67d9bd0e4505bf5ace05ed632d7f08340a372f0715466e9". You have to remove (or rename) that container to be able to reuse that name.</h2>
+        <p>Encountered this error when attempting to run a Docker container</p>
+        <div class="solution">
+            <h3>Explanation:</h3>
+            <p>This error occurs when you try to create a new Docker container with a name that's already being used by another container. In this case, the name "proxy" is already assigned to an existing container.</p>
+            <h3>Solution:</h3>
+            <p>Have a look at the containers that you've already got with `docker ps -a`. Remove the existing container with `docker rm <your container>`. Note that if the container is running, you made need to stop it first with `docker kill <your container>`.</p>
+        </div>
+        <time datetime="26-09-2024" class="error-date">September 26, 2024</time>
+    </article>
+    
+    <article class="error-entry">
+        <h2>WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8)</h2>
+        <p>Came across this wanning when trying to run `docker run -d --name httpbin citizenstig/httpbin` on my M3 Macbook.</p>
+        <div class="solution">
+            <h3>Explanation:</h3>
+            <p>This warning occurs when the Docker image's architecture doesn't match the host's architecture. In this case, the image is built for AMD64 (x86_64) architecture, but you're running on an ARM64 system (likely an Apple Silicon Mac or ARM-based server).</p>
+            <h3>Solution:</h3>
+            <p>To resolve this, you have several options: Use a multi-architecture image if available, build the image specifically for your architecture, or, if you're using Docker Desktop for Mac, you can use the built-in virtualization, which allows you to run x86 containers on ARM systems.</p>
+        </div>
+        <time datetime="26-09-2024" class="error-date">September 26, 2024</time>
+    </article>
+    
+<!-- ERROR_ENTRIES_END -->
+    </main>
+
+    <footer>
+        <p>Created and maintained by Sam Westmoreland. Last updated: <span id="last-updated"></span></p>
+    </footer>
+
+    <script>
+        document.getElementById('last-updated').textContent = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>
