@@ -1,4 +1,5 @@
 import json
+import argparse
 from datetime import datetime
 
 def generate_html(error):
@@ -17,6 +18,13 @@ def generate_html(error):
     """
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-o', '--output', type=str, default='build/index.html')
+
+    # Check if build dir exists and error if not
+    if not 'build' in os.listdir('.'):
+        raise Exception('No build directory found. Please create one first.')
+
     # Load JSON data
     with open('error_entries.json', 'r') as f:
         data = json.load(f)
@@ -42,7 +50,7 @@ def main():
     )
 
     # Write the updated HTML back to index.html
-    with open('index.html', 'w') as f:
+    with open(args.output, 'w') as f:
         f.write(new_index_html)
 
 if __name__ == "__main__":
