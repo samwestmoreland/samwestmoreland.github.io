@@ -5,6 +5,7 @@ from datetime import datetime
 
 def generate_html(error):
     error = render_code_tags(error)
+    tags = ', '.join(error['tags'])
 
     return f"""
     <article class="error-entry">
@@ -16,13 +17,14 @@ def generate_html(error):
             <h3>Solution:</h3>
             <p>{error['solution']}</p>
         </div>
+        <p>{tags}</p>
         <time datetime="{error['date']}" class="error-date">{datetime.strptime(error['date'], '%d-%m-%Y').strftime('%B %d, %Y')}</time>
     </article>
     """
 
+
 def render_code_tags(error) -> dict:
     """Check error entry for code (strings surrounded by backticks), and replace with <code> tags"""
-    # make an empty dict
     ret = {}
     fields_to_check = ['context', 'explanation', 'solution']
     for field in error:
@@ -33,8 +35,9 @@ def render_code_tags(error) -> dict:
 
     return ret
 
+
 def render_code_tags_in_string(string) -> str:
-    """Replace backticks with <code> tags. The tricky part is knowing which backticks need to be <code> and which need to be </code>"""
+    """Replace backticks in the given string with <code> tags."""
     open = True
     ret = ""
     for i in range(len(string)):
