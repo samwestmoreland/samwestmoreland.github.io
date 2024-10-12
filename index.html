@@ -64,45 +64,6 @@
     <main>
         <!-- ERROR_ENTRIES_START -->
 
-    <article class="error-entry">
-        <h2>TLS_error:|268436501:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_EXPIRED:TLS_error_end</h2>
-        <p>When trying to curl an Istio Ingress Gateway, found this error in the Ingress's istio-proxy logs.</p>
-        <div class="solution">
-            <h3>Explanation:</h3>
-            <p>This is an issue that can occur with Istio where the TLS certificate on the Ingress Gateway is expired, meaning that the Ingress Gateway can't serve https traffic. The Istio control plane is supposed to periodically rotate these certificates, but if the certificate rotation fails, the Ingress can get stuck in a state with an expired certificate.</p>
-            <h3>Solution:</h3>
-            <p>The fix is to delete the Istio Ingress Gateway pod and create a new one. This should create a new pod with a valid certificate.</p>
-        </div>
-        <p>network, tls, security, istio, kubernetes, ingress, gateway</p>
-        <time datetime="10-10-2024" class="error-date">October 10, 2024</time>
-    </article>
-    
-    <article class="error-entry">
-        <h2>docker: Error response from daemon: Conflict. The container name "/proxy" is already in use by container "a635a1388ce802b3c67d9bd0e4505bf5ace05ed632d7f08340a372f0715466e9". You have to remove (or rename) that container to be able to reuse that name.</h2>
-        <p>Encountered this error when attempting to run a Docker container</p>
-        <div class="solution">
-            <h3>Explanation:</h3>
-            <p>This error occurs when you try to create a new Docker container with a name that's already being used by another container. In this case, the name "proxy" is already assigned to an existing container.</p>
-            <h3>Solution:</h3>
-            <p>Have a look at the containers that you've already got with <code>docker ps -a</code>. Remove the existing container with <code>docker rm <your container></code>. Note that if the container is running, you made need to stop it first with <code>docker kill <your container></code>.</p>
-        </div>
-        <p>docker, kubernetes, containers</p>
-        <time datetime="26-09-2024" class="error-date">September 26, 2024</time>
-    </article>
-    
-    <article class="error-entry">
-        <h2>WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8)</h2>
-        <p>Came across this wanning when trying to run <code>docker run -d --name httpbin citizenstig/httpbin</code> on my M3 Macbook.</p>
-        <div class="solution">
-            <h3>Explanation:</h3>
-            <p>This warning occurs when the Docker image's architecture doesn't match the host's architecture. In this case, the image is built for AMD64 (x86_64) architecture, but you're running on an ARM64 system (likely an Apple Silicon Mac or ARM-based server).</p>
-            <h3>Solution:</h3>
-            <p>To resolve this, you have several options: Use a multi-architecture image if available, build the image specifically for your architecture, or, if you're using Docker Desktop for Mac, you can use the built-in virtualization, which allows you to run x86 containers on ARM systems.</p>
-        </div>
-        <p>docker, kubernetes, containers</p>
-        <time datetime="26-09-2024" class="error-date">September 26, 2024</time>
-    </article>
-    
 <!-- ERROR_ENTRIES_END -->
     </main>
 
