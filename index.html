@@ -83,14 +83,14 @@
             <h3>Explanation:</h3>
             <p>This error occurs when you try to create a new Docker container with a name that's already being used by another container. In this case, the name "proxy" is already assigned to an existing container.</p>
             <h3>Solution:</h3>
-            <p>Have a look at the containers that you've already got with `docker ps -a`. Remove the existing container with `docker rm <your container>`. Note that if the container is running, you made need to stop it first with `docker kill <your container>`.</p>
+            <p>Have a look at the containers that you've already got with <code>docker ps -a</code>. Remove the existing container with <code>docker rm <your container></code>. Note that if the container is running, you made need to stop it first with <code>docker kill <your container></code>.</p>
         </div>
         <time datetime="26-09-2024" class="error-date">September 26, 2024</time>
     </article>
     
     <article class="error-entry">
         <h2>WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8)</h2>
-        <p>Came across this wanning when trying to run `docker run -d --name httpbin citizenstig/httpbin` on my M3 Macbook.</p>
+        <p>Came across this wanning when trying to run <code>docker run -d --name httpbin citizenstig/httpbin</code> on my M3 Macbook.</p>
         <div class="solution">
             <h3>Explanation:</h3>
             <p>This warning occurs when the Docker image's architecture doesn't match the host's architecture. In this case, the image is built for AMD64 (x86_64) architecture, but you're running on an ARM64 system (likely an Apple Silicon Mac or ARM-based server).</p>
