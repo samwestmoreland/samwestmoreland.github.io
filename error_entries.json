@@ -18,11 +18,12 @@
         },
         {
             "title": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8)",
-            "context": "Came across this wanning when trying to run `docker run -d --name httpbin citizenstig/httpbin` on my M3 Macbook.",
+            "context": "Came across this warning when trying to run `docker run -d --name httpbin citizenstig/httpbin` on my M3 Macbook.",
             "explanation": "This warning occurs when the Docker image's architecture doesn't match the host's architecture. In this case, the image is built for AMD64 (x86_64) architecture, but you're running on an ARM64 system (likely an Apple Silicon Mac or ARM-based server).",
             "solution": "To resolve this, you have several options: Use a multi-architecture image if available, build the image specifically for your architecture, or, if you're using Docker Desktop for Mac, you can use the built-in virtualization, which allows you to run x86 containers on ARM systems.",
             "tags": ["docker", "kubernetes", "containers"],
-            "date": "26-09-2024"
+            "date": "26-09-2024",
+            "updated": "12-10-2024"
         }
     ]
 }
