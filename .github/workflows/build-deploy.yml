@@ -18,7 +18,7 @@ jobs:
       - name: Generate HTML
         run: |
           mkdir build
-          python convert_errors_to_html.py -o build/index.html
+          python converter/convert_errors_to_html.py -o build/index.html
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
