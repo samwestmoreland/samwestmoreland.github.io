@@ -52,7 +52,7 @@ def main():
         index_html[end_index:]
     )
 
-    # Write the updated HTML back to index.html
+    # Write the updated HTML to the output file
     with open(args.output, 'w') as f:
         f.write(new_index_html)
 
