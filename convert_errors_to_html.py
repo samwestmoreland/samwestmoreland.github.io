@@ -1,5 +1,6 @@
 import json
 import argparse
+import os
 from datetime import datetime
 
 def generate_html(error):
@@ -20,6 +21,8 @@ def generate_html(error):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-o', '--output', type=str, default='build/index.html')
+
+    args = parser.parse_args()
 
     # Check if build dir exists and error if not
     if not 'build' in os.listdir('.'):
