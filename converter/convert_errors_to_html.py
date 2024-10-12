@@ -10,6 +10,11 @@ def generate_html(error):
     error = render_code_tags(error)
     tags = ', '.join(error['tags'])
 
+    # The 'updated' field may or may not be present
+    updated = error['updated'] if 'updated' in error else None
+
+    date_html = generate_date_html(error['date'], updated)
+
     return f"""
     <article class="error-entry">
         <h2>{error['title']}</h2>
@@ -21,10 +26,20 @@ def generate_html(error):
             <p>{error['solution']}</p>
         </div>
         <p>{tags}</p>
-        <time datetime="{error['date']}" class="error-date">{datetime.strptime(error['date'], '%d-%m-%Y').strftime('%B %d, %Y')}</time>
+        {date_html}
     </article>
     """
 
+
+def generate_date_html(date, updated) -> str:
+    ret = f"<p>Created: <time datetime='{date}' class='error-date'>{datetime.strptime(date, '%d-%m-%Y').strftime('%B %d, %Y')}</time>"
+
+    if updated:
+        ret += f" Updated: <time datetime='{updated}' class='error-date'>{datetime.strptime(updated, '%d-%m-%Y').strftime('%B %d, %Y')}</time>"
+
+    ret += "</p>"
+
+    return ret
 
 def render_code_tags(error) -> dict:
     """Check error entry for code (strings surrounded by backticks), and replace with <code> tags"""
