@@ -1,7 +1,10 @@
 import json
+import hashlib
 import argparse
 import os
 from datetime import datetime
+
+CACHE_DIR = '.cache'
 
 def generate_html(error):
     error = render_code_tags(error)
@@ -54,12 +57,19 @@ def render_code_tags_in_string(string) -> str:
     return ret
 
 
+def md5(string):
+    return hashlib.md5(string.encode('utf-8')).hexdigest()
+
+
 def main():
     print('Converting error entries to HTML...')
     parser = argparse.ArgumentParser()
     parser.add_argument('-o', '--output', type=str, default='build/index.html')
 
     args = parser.parse_args()
+
+    if not os.path.exists(CACHE_DIR):
+        os.mkdir(CACHE_DIR)
 
     # Check if build dir exists and error if not
     if not 'build' in os.listdir('.'):
@@ -74,9 +84,22 @@ def main():
     # Generate HTML for all error entries
     error_entries_html = ""
     count = 0
-    for error in data['errors']:
-        print('Generating HTML for entry ' + str(count + 1) + ' of ' + str(len(data['errors'])))
-        error_entries_html += generate_html(error)
+    for entry in data['errors']:
+        print('Processing entry ' + str(count + 1) + ' of ' + str(len(data['errors'])))
+
+        entry_hash = md5(json.dumps(entry, sort_keys=True))
+        cache_file = os.path.join(CACHE_DIR, entry_hash)
+
+        if os.path.exists(cache_file):
+            print('Cache hit ' + entry_hash)
+            with open(cache_file, 'r') as f:
+                processed_entry = json.load(f)
+        else:
+            processed_entry = generate_html(entry)
+            with open(cache_file, 'w') as f:
+                json.dump(processed_entry, f)
+
+        error_entries_html += processed_entry
         count += 1
 
     # Read the existing index.html

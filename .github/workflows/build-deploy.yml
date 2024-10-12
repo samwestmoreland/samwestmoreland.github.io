@@ -15,6 +15,16 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Generate cache key
+        id: cache-key
+        run: echo "::set-output name=key::$(md5sum error_entries.json | awk '{ print $1 }')"
+
+      - name: Cache processed entries
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: ${{ runner.os }}-processed-entries-${{ steps.cache-key.outputs.key }}
+
       - name: Generate HTML
         run: |
           mkdir build
