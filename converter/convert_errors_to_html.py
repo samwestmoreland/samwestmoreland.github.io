@@ -32,14 +32,16 @@ def generate_html(error):
 
 
 def generate_date_html(date, updated) -> str:
-    ret = f"<p>Created: <time datetime='{date}' class='error-date'>{datetime.strptime(date, '%d-%m-%Y').strftime('%B %d, %Y')}</time>"
+    ret = "<p class='error-date'>"
+    ret += f"Created: <time datetime='{date}'>{datetime.strptime(date, '%d-%m-%Y').strftime('%B %d, %Y')}</time>"
 
     if updated:
-        ret += f" Updated: <time datetime='{updated}' class='error-date'>{datetime.strptime(updated, '%d-%m-%Y').strftime('%B %d, %Y')}</time>"
+        ret += f"; Updated: <time datetime='{updated}'>{datetime.strptime(updated, '%d-%m-%Y').strftime('%B %d, %Y')}</time>"
 
     ret += "</p>"
 
     return ret
+
 
 def render_code_tags(error) -> dict:
     """Check error entry for code (strings surrounded by backticks), and replace with <code> tags"""
