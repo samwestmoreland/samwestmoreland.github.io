@@ -52,6 +52,7 @@ def render_code_tags_in_string(string) -> str:
 
 
 def main():
+    print('Converting error entries to HTML...')
     parser = argparse.ArgumentParser()
     parser.add_argument('-o', '--output', type=str, default='build/index.html')
 
@@ -65,10 +66,15 @@ def main():
     with open('error_entries.json', 'r') as f:
         data = json.load(f)
 
+    print('Found ' + str(len(data['errors'])) + ' entries')
+
     # Generate HTML for all error entries
     error_entries_html = ""
+    count = 0
     for error in data['errors']:
+        print('Generating HTML for entry ' + str(count + 1) + ' of ' + str(len(data['errors'])))
         error_entries_html += generate_html(error)
+        count += 1
 
     # Read the existing index.html
     with open('index.html', 'r') as f:
@@ -86,8 +92,12 @@ def main():
     )
 
     # Write the updated HTML to the output file
+    print('Writing updated HTML to ' + args.output)
     with open(args.output, 'w') as f:
         f.write(new_index_html)
+
+    print('Done!')
+
 
 if __name__ == "__main__":
     main()
