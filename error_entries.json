@@ -11,11 +11,12 @@
         },
         {
             "title": "docker: Error response from daemon: Conflict. The container name \"/proxy\" is already in use by container \"a635a1388ce802b3c67d9bd0e4505bf5ace05ed632d7f08340a372f0715466e9\". You have to remove (or rename) that container to be able to reuse that name.",
-            "context": "Encountered this error when attempting to run a Docker container",
+            "context": "Encountered this error when attempting to run a Docker container.",
             "explanation": "This error occurs when you try to create a new Docker container with a name that's already being used by another container. In this case, the name \"proxy\" is already assigned to an existing container.",
             "solution": "Have a look at the containers that you've already got with `docker ps -a`. Remove the existing container with `docker rm <your container>`. Note that if the container is running, you made need to stop it first with `docker kill <your container>`.",
             "tags": ["docker", "kubernetes", "containers"],
-            "date": "26-09-2024"
+            "date": "26-09-2024",
+            "updated": "13-10-2024"
         },
         {
             "title": "WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8)",
