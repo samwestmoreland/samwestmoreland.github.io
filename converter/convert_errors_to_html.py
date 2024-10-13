@@ -36,7 +36,7 @@ def generate_date_html(date, updated) -> str:
     ret += f"Created: <time datetime='{date}'>{datetime.strptime(date, '%d-%m-%Y').strftime('%B %d, %Y')}</time>"
 
     if updated:
-        ret += f"; Updated: <time datetime='{updated}'>{datetime.strptime(updated, '%d-%m-%Y').strftime('%B %d, %Y')}</time>"
+        ret += f"; Last updated: <time datetime='{updated}'>{datetime.strptime(updated, '%d-%m-%Y').strftime('%B %d, %Y')}</time>"
 
     ret += "</p>"
 
