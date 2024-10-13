@@ -69,12 +69,12 @@
         <p>When trying to curl an Istio Ingress Gateway, found this error in the Ingress's istio-proxy logs.</p>
         <div class="solution">
             <h3>Explanation:</h3>
-            <p>This is an issue that can occur with Istio where the TLS certificate on the Ingress Gateway is expired, meaning that the Ingress Gateway can't serve https traffic. The Istio control plane is supposed to periodically rotate these certificates, but if the certificate rotation fails, the Ingress can get stuck in a state with an expired certificate.</p>
+            <p>This is an issue that can occur with Istio where the TLS certificate on the Ingress Gateway is expired, meaning that the Ingress Gateway can't serve https traffic. The Istio control plane is supposed to periodically rotate these certificates, but if the certificate rotation fails, the Ingress can get stuck in a state with an expired certificate. Note that to see the error message above, you have to enable debug-level logging in the istio-proxy container of the Ingress Gateway pod. To do this you can run <code>istioctl proxy-config log POD --level=debug</code>, where <code>POD</code> is the name of the pod.</p>
             <h3>Solution:</h3>
             <p>The fix is to delete the Istio Ingress Gateway pod and create a new one. This should create a new pod with a valid certificate.</p>
         </div>
         <p>network, tls, security, istio, kubernetes, ingress, gateway</p>
-        <p class='error-date'>Created: <time datetime='10-10-2024'>October 10, 2024</time></p>
+        <p class='error-date'>Created: <time datetime='10-10-2024'>October 10, 2024</time>; Last updated: <time datetime='13-10-2024'>October 13, 2024</time></p>
     </article>
     
     <article class="error-entry">
