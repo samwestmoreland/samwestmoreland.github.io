@@ -7,7 +7,7 @@ from datetime import datetime
 CACHE_DIR = '.cache'
 
 def generate_html(error):
-    error = render_code_tags(error)
+    error = santise_for_html(error)
     tags = ', '.join(error['tags'])
 
     # The 'updated' field may or may not be present
@@ -43,21 +43,23 @@ def generate_date_html(date, updated) -> str:
     return ret
 
 
-def render_code_tags(error) -> dict:
-    """Check error entry for code (strings surrounded by backticks), and replace with <code> tags"""
+def santise_for_html(error) -> dict:
+    """Performs transformations on some fields of the error dict to prepare it for HTML rendering"""
     ret = {}
     fields_to_check = ['context', 'explanation', 'solution']
     for field in error:
         if field in fields_to_check:
-            ret[field] = render_code_tags_in_string(error[field])
+            ret[field] = santise_string_for_html(error[field])
         else:
             ret[field] = error[field]
 
     return ret
 
 
-def render_code_tags_in_string(string) -> str:
-    """Replace backticks in the given string with <code> tags."""
+def santise_string_for_html(string) -> str:
+    """Replace backticks in the given string with <code> tags, and replace < and > with &lt; and &gt;."""
+    string = string.replace('<', '&lt;').replace('>', '&gt;')
+
     open = True
     ret = ""
     for i in range(len(string)):
