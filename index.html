@@ -79,7 +79,7 @@
     
     <article class="error-entry">
         <h2>docker: Error response from daemon: Conflict. The container name "/proxy" is already in use by container "a635a1388ce802b3c67d9bd0e4505bf5ace05ed632d7f08340a372f0715466e9". You have to remove (or rename) that container to be able to reuse that name.</h2>
-        <p>Encountered this error when attempting to run a Docker container</p>
+        <p>Encountered this error when attempting to run a Docker container.</p>
         <div class="solution">
             <h3>Explanation:</h3>
             <p>This error occurs when you try to create a new Docker container with a name that's already being used by another container. In this case, the name "proxy" is already assigned to an existing container.</p>
@@ -87,7 +87,7 @@
             <p>Have a look at the containers that you've already got with <code>docker ps -a</code>. Remove the existing container with <code>docker rm <your container></code>. Note that if the container is running, you made need to stop it first with <code>docker kill <your container></code>.</p>
         </div>
         <p>docker, kubernetes, containers</p>
-        <p class='error-date'>Created: <time datetime='26-09-2024'>September 26, 2024</time></p>
+        <p class='error-date'>Created: <time datetime='26-09-2024'>September 26, 2024</time>; Last updated: <time datetime='13-10-2024'>October 13, 2024</time></p>
     </article>
     
     <article class="error-entry">
