@@ -3,10 +3,11 @@
         {
             "title": "TLS_error:|268436501:SSL routines:OPENSSL_internal:SSLV3_ALERT_CERTIFICATE_EXPIRED:TLS_error_end",
             "context": "When trying to curl an Istio Ingress Gateway, found this error in the Ingress's istio-proxy logs.",
-            "explanation": "This is an issue that can occur with Istio where the TLS certificate on the Ingress Gateway is expired, meaning that the Ingress Gateway can't serve https traffic. The Istio control plane is supposed to periodically rotate these certificates, but if the certificate rotation fails, the Ingress can get stuck in a state with an expired certificate.",
+            "explanation": "This is an issue that can occur with Istio where the TLS certificate on the Ingress Gateway is expired, meaning that the Ingress Gateway can't serve https traffic. The Istio control plane is supposed to periodically rotate these certificates, but if the certificate rotation fails, the Ingress can get stuck in a state with an expired certificate. Note that to see the error message above, you have to enable debug-level logging in the istio-proxy container of the Ingress Gateway pod. To do this you can run `istioctl proxy-config log POD --level=debug`, where `POD` is the name of the pod.",
             "solution": "The fix is to delete the Istio Ingress Gateway pod and create a new one. This should create a new pod with a valid certificate.",
             "tags": ["network", "tls", "security", "istio", "kubernetes", "ingress", "gateway"],
-            "date": "10-10-2024"
+            "date": "10-10-2024",
+            "updated": "13-10-2024"
         },
         {
             "title": "docker: Error response from daemon: Conflict. The container name \"/proxy\" is already in use by container \"a635a1388ce802b3c67d9bd0e4505bf5ace05ed632d7f08340a372f0715466e9\". You have to remove (or rename) that container to be able to reuse that name.",
