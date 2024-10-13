@@ -17,7 +17,9 @@ jobs:
 
       - name: Generate cache key
         id: cache-key
-        run: echo "::set-output name=key::$(md5sum error_entries.json | awk '{ print $1 }')"
+        run: |
+          SCRIPT_HASH=$(md5sum converter/convert_errors_to_html.py | awk '{ print $1 }')
+          echo "::set-output name=key::${SCRIPT_HASH}"
 
       - name: Cache processed entries
         uses: actions/cache@v4
