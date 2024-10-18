@@ -30,7 +30,7 @@ jobs:
       - name: Generate HTML
         run: |
           mkdir build
-          python converter/convert_errors_to_html.py -o build/index.html
+          python converters/convert_errors_to_html.py -o build/index.html
           pip install markdown2
           python markdown2.py network_debugging_framework.md > network_debugging_framework.html
 
