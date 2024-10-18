@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error Log</title>
     <style>
+        .menu-bar {
+            background-color: #333;
+            padding: 10px 0;
+        }
+        .menu-bar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .menu-bar li {
+            display: inline;
+            margin: 0 15px;
+        }
+        .menu-bar a {
+            color: white;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+        }
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
@@ -56,6 +75,12 @@
     </style>
 </head>
 <body>
+    <nav class="menu-bar">
+        <ul>
+            <li><a href="index.html">Error Log</a></li>
+            <li><a href="network_debugging_framework.html">Network debugging framework</a></li>
+        </ul>
+    </nav>
     <header>
         <h1>Sam's Error Log</h1>
         <p>A collection of error messages I've encountered and how I resolved them.</p>
