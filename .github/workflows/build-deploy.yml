@@ -32,7 +32,7 @@ jobs:
           mkdir build
           python converters/convert_errors_to_html.py -o build/index.html
           pip install markdown2
-          python markdown2.py network_debugging_framework.md > network_debugging_framework.html
+          python -m markdown2 network_debugging_framework.md > build/network_debugging_framework.html
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
