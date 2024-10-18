@@ -1,5 +1,5 @@
 import unittest
-import converter.convert_errors_to_html as convert_errors_to_html
+import converters.convert_errors_to_html as convert_errors_to_html
 
 class TestConvertBackticksToHTML(unittest.TestCase):
     def test_one_pair(self):
