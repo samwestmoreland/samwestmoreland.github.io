@@ -1,0 +1,155 @@
+<h1>A General Framework for Debugging Kubernetes Connectivity Issues</h1>
+
+<h2>1. Identify the Components Involved</h2>
+
+<p>Source: The pod or service that’s trying to make the connection</p>
+
+<p>Target: The pod or service that the source is trying to reach</p>
+
+<p>This helps you focus on what part of the system you need to debug.</p>
+
+<h2>2. Validate Pod and Service Status</h2>
+
+<h3>2.1. Check Pods</h3>
+
+<p>Are the source and target pods running?</p>
+
+<p><code>bash
+kubectl get pods -n &lt;namespace&gt;
+</code>
+All pods should show Running and the READY column should show the correct number of containers.
+Check pod logs for any errors related to readiness or network issues:</p>
+
+<p><code>bash
+kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt;
+</code></p>
+
+<h3>2.2. Check Services</h3>
+
+<p>Is the service created and exposing the correct ports?</p>
+
+<p><code>bash
+kubectl get svc -n &lt;namespace&gt;
+</code>
+The service should show the correct ClusterIP and ports.
+Example output:
+<code>scss
+NAME   TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+echo   ClusterIP   10.0.0.1     &lt;none&gt;        7070/TCP   10m
+</code></p>
+
+<p>Is the service mapped to the correct target port (the container's port)?</p>
+
+<p><code>bash
+kubectl describe svc &lt;service-name&gt; -n &lt;namespace&gt;
+</code>
+This will show the port mappings. Ensure the service port matches the container's targetPort.</p>
+
+<h2>3. Networking Check: DNS and Reachability</h2>
+
+<h3>3.1. DNS Resolution</h3>
+
+<p>Does the source pod resolve the target service’s DNS correctly?
+You can run a DNS resolution test from the source pod:
+<code>bash
+kubectl run -it --rm --restart=Never dns-test --image=busybox -- nslookup &lt;service-name&gt;.&lt;namespace&gt;.svc.cluster.local
+</code>
+This will test if the target service resolves to a valid ClusterIP.
+If DNS fails, ensure that the CoreDNS pods are running and healthy:
+<code>bash
+kubectl get pods -n kube-system -l k8s-app=kube-dns
+</code></p>
+
+<h3>3.2. Ping and Port Checks</h3>
+
+<p>Can the source pod reach the target service via IP or hostname?</p>
+
+<p>Try pinging the service IP or pod IP from the source pod:
+<code>bash
+kubectl exec &lt;source-pod&gt; -- ping &lt;service-ip&gt;
+</code>
+Test the service port (e.g., 7070) using curl or nc from the source pod to check if the port is open:</p>
+
+<p><code>bash
+kubectl exec &lt;source-pod&gt; -- nc -zv &lt;target-service-ip&gt; 7070
+</code>
+If these fail, there might be a network or routing issue between the pods.</p>
+
+<h2>4. Service Mesh and Network Policies</h2>
+
+<h3>4.1. Istio or mTLS Settings</h3>
+
+<p>Is Istio or another service mesh enforcing traffic policies like mTLS?</p>
+
+<p>Check if mutual TLS (mTLS) is enabled in the namespace or globally using PeerAuthentication:
+<code>bash
+kubectl get peerauthentication --all-namespaces
+</code>
+Are there any virtual services, destination rules, or gateways affecting traffic?</p>
+
+<p>Verify Istio's configuration for the namespace by checking these resources:
+<code>bash
+kubectl get virtualservice,destinationrule,gateway -n &lt;namespace&gt;
+</code></p>
+
+<h3>4.2. Network Policies</h3>
+
+<p>Are there network policies blocking traffic?
+Check if any NetworkPolicy resources are applied that could restrict communication between namespaces or pods:
+<code>bash
+kubectl get networkpolicy -n &lt;namespace&gt;
+</code>
+Inspect the rules to ensure that the target pod or service is allowed to receive traffic from the source pod.</p>
+
+<h2>5. Pod-Level Debugging</h2>
+
+<h3>5.1. Check Container Ports</h3>
+
+<p>Ensure that the pod is listening on the correct port by checking the container spec:
+<code>bash
+kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;
+</code>
+Verify that the container has the expected port open.</p>
+
+<h3>5.2. Test Connectivity from the Pod</h3>
+
+<p>Run curl or grpcurl directly inside the pod to test reachability. For example, if you're testing gRPC connectivity:
+<code>bash
+kubectl exec &lt;source-pod&gt; -- grpcurl -plaintext &lt;service-ip&gt;:7070 proto.EchoTestService/ForwardEcho
+</code></p>
+
+<h2>6. Inspect Pod Readiness and Liveness</h2>
+
+<p>Are the pods ready to receive traffic?</p>
+
+<p>Kubernetes uses readiness probes to determine if a pod can receive traffic. If the pod isn’t ready, traffic won’t be routed to it:
+<code>bash
+kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;
+</code>
+Look for readiness or liveness probe failures.
+Do the pods have any CrashLoopBackOff issues?</p>
+
+<p>Pods in a CrashLoopBackOff state indicate there’s a problem starting the application.</p>
+
+<h2>7. Debugging at the Network Layer</h2>
+
+<h3>7.1. Use kubectl port-forward for Port Debugging</h3>
+
+<p>Use kubectl port-forward to tunnel into a pod and check if it's correctly listening on a port:
+<code>bash
+kubectl port-forward &lt;pod-name&gt; 8080:7070
+</code></p>
+
+<h3>7.2. Look at Network Traffic with Tools</h3>
+
+<p>You can use tools like tcpdump or Wireshark to monitor traffic between the source and target pod.
+Alternatively, use Kubernetes NetworkPolicy logs or Istio’s Envoy proxy logs (if using Istio) to track where traffic might be getting blocked.</p>
+
+<h2>8. Final Step: Cluster-Wide Issues</h2>
+
+<p>If nothing seems wrong at the pod or service level, consider cluster-wide issues like:</p>
+
+<p>Cluster DNS outages.
+Node-level issues (e.g., nodes are unhealthy, or networking on the nodes is misconfigured).
+IP conflicts or CNI (Container Network Interface) issues (check the CNI plugin's health, such as Calico, Flannel, etc.).
+Use kubectl get nodes and check the status of the nodes to ensure they're all healthy.</p>
