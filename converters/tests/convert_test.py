@@ -5,22 +5,22 @@ class TestConvertBackticksToHTML(unittest.TestCase):
     def test_one_pair(self):
         input = "here is some code: `print('hello world')`"
         expected_output = "here is some code: <code>print('hello world')</code>"
-        self.assertEqual(convert_errors_to_html.render_code_tags_in_string(input), expected_output)
+        self.assertEqual(convert_errors_to_html.santise_string_for_html(input), expected_output)
 
     def test_no_backticks(self):
         input = "no code here!"
         expected_output = "no code here!"
-        self.assertEqual(convert_errors_to_html.render_code_tags_in_string(input), expected_output)
+        self.assertEqual(convert_errors_to_html.santise_string_for_html(input), expected_output)
 
     def test_multiple_pairs(self):
         input = "here is some code: `print('hello world')`, `print('hello world')`"
         expected_output = "here is some code: <code>print('hello world')</code>, <code>print('hello world')</code>"
-        self.assertEqual(convert_errors_to_html.render_code_tags_in_string(input), expected_output)
+        self.assertEqual(convert_errors_to_html.santise_string_for_html(input), expected_output)
 
     def test_odd_set_of_backticks(self):
         input = "here is some code: `print('hello world')` `print('hello world')"
         expected_output = "here is some code: <code>print('hello world')</code> <code>print('hello world')"
-        self.assertEqual(convert_errors_to_html.render_code_tags_in_string(input), expected_output)
+        self.assertEqual(convert_errors_to_html.santise_string_for_html(input), expected_output)
 
     def test_convert_error_object(self):
         input = {
@@ -36,7 +36,7 @@ class TestConvertBackticksToHTML(unittest.TestCase):
             "solution": "simply run <code>foo</code>"
         }
 
-        actual_output = convert_errors_to_html.render_code_tags(input)
+        actual_output = convert_errors_to_html.santise_for_html(input)
 
         for field in expected_output:
             self.assertEqual(actual_output[field], expected_output[field])
