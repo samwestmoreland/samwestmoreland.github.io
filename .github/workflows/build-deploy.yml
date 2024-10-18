@@ -18,7 +18,7 @@ jobs:
       - name: Generate cache key
         id: cache-key
         run: |
-          SCRIPT_HASH=$(md5sum converter/convert_errors_to_html.py | awk '{ print $1 }')
+          SCRIPT_HASH=$(md5sum converters/convert_errors_to_html.py | awk '{ print $1 }')
           echo "::set-output name=key::${SCRIPT_HASH}"
 
       - name: Cache processed entries
@@ -31,6 +31,8 @@ jobs:
         run: |
           mkdir build
           python converter/convert_errors_to_html.py -o build/index.html
+          pip install markdown2
+          python markdown2.py network_debugging_framework.md > network_debugging_framework.html
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
